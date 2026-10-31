@@ -1,0 +1,35 @@
+name: coverage
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+          dotnet-quality: 'preview'
+      - run: dotnet restore LabCalc.slnx
+      - run: dotnet build LabCalc.slnx -c Release --no-restore
+
+  test:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+          dotnet-quality: 'preview'
+      
+      - run: dotnet test LabCalc.slnx -c Release --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage
+          path: "**/TestResults/**/coverage.cobertura.xml"
+          retention-days: 14
