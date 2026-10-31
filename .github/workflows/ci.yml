@@ -14,7 +14,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '11.0.x'
+          dotnet-quality: 'preview'
       - run: dotnet restore LabCalc.slnx
       - run: dotnet build LabCalc.slnx --no-restore
 
@@ -25,5 +26,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '11.0.x'
+          dotnet-quality: 'preview'
       - run: dotnet test LabCalc.slnx
